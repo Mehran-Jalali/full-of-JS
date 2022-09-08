@@ -10,6 +10,7 @@ function animateSlides() {
   const nav = document.querySelector(`.nav-header`);
   //Loop over each slide
   sliders.forEach((slide, index, slides) => {
+    // →☺→ Never forget to write (( slide.querySelector )) at beginning NOT document ↓↓↓↓
     const revealImg = slide.querySelector(`.reveal-img`);
     const img = slide.querySelector(`img`);
     const revealText = slide.querySelector(`.reveal-text`);
@@ -39,11 +40,11 @@ function animateSlides() {
       reverse: false,
     })
       .setTween(slideTl)
-      .addIndicators({
-        colorStart: "white",
-        colorTrigger: "white",
-        name: "slide",
-      })
+      //   .addIndicators({
+      //     colorStart: "white",
+      //     colorTrigger: "white",
+      //     name: "slide",
+      //   })
       .addTo(controller);
     //----------------
     //New Animation
@@ -58,24 +59,52 @@ function animateSlides() {
     pageTl.fromTo(nextSlide, { y: "50%" }, { y: "0%" }, `-=0.5`);
 
     //Create pageScene
+    // →☺→ Never forget to write (( new )) at beginning ↓↓↓↓
     pageScene = new ScrollMagic.Scene({
       triggerElement: slide,
       duration: "100%",
       triggerHook: 0,
     })
-      .addIndicators({
-        colorStart: `white`,
-        colorTrigger: `white`,
-        name: "page",
-        indent: 200,
-      })
+      //   .addIndicators({
+      //     colorStart: `white`,
+      //     colorTrigger: `white`,
+      //     name: "page",
+      //     indent: 200,
+      //   })
       .setPin(slide, { pushFollowers: false })
       .setTween(pageTl)
       .addTo(controller);
   });
 }
-
-// let controller;
-// let slideScene;
+let mouse = document.querySelector(`.cursor`);
+let mouseTxt = mouse.querySelector(`span`);
+function cursor(e) {
+  mouse.style.top = e.pageY + `px`;
+  mouse.style.left = e.pageX + `px`;
+}
+function activeCursor(e) {
+  const item = e.target;
+  if (item.id === `logo` || item.classList.contains("burger")) {
+    mouse.classList.add("nav-active");
+  } else {
+    mouse.classList.remove("nav-active");
+  }
+  const bTl = new gsap.timeline({
+    defaults: { duration: 1, ease: "bounce.out", y: -500 },
+  });
+  if (item.classList.contains("explore")) {
+    mouse.classList.add("exp-active");
+    bTl.to(".title-swipe", 1.5, { y: "0%" });
+    mouseTxt.innerText = `Tap`;
+    mouseTxt.style.color = `blue`;
+  } else {
+    mouse.classList.remove("exp-active");
+    bTl.to(".title-swipe", 1, { y: "100%" });
+    mouseTxt.innerText = ``;
+    mouseTxt.style.color = ``;
+  }
+}
+window.addEventListener(`mousemove`, cursor);
+window.addEventListener(`mouseover`, activeCursor);
 
 animateSlides();

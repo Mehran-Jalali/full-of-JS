@@ -76,8 +76,9 @@ function animateSlides() {
       .addTo(controller);
   });
 }
-let mouse = document.querySelector(`.cursor`);
-let mouseTxt = mouse.querySelector(`span`);
+const mouse = document.querySelector(`.cursor`);
+const mouseTxt = mouse.querySelector(`span`);
+const burger = document.querySelector(".burger");
 function cursor(e) {
   mouse.style.top = e.pageY + `px`;
   mouse.style.left = e.pageX + `px`;
@@ -104,6 +105,52 @@ function activeCursor(e) {
     mouseTxt.style.color = ``;
   }
 }
+
+function navToggle(e) {
+  if (!e.target.classList.contains(`active`)) {
+    e.target.classList.add(`active`);
+    gsap.to(".line2", { opacity: 0 });
+    gsap.to(".line1", 0.5, {
+      rotate: "45deg",
+      y: 5,
+      background: "black",
+    });
+    gsap.to(".line3", 0.5, {
+      rotate: "+135deg",
+      y: -11,
+      background: "black",
+    });
+    gsap.to("#logo", 0.5, { color: "black" });
+    gsap.to(".nav-bar", 1, {
+      clipPath: `circle(2500px at 100% -10%)`,
+      zIndex: -1,
+    });
+    document.body.style.overflowY = "hidden";
+  } else {
+    e.target.classList.remove(`active`);
+    gsap.to(".line2", { opacity: 1 });
+    gsap.to(".line1", 0.5, {
+      rotate: "0deg",
+      y: 0,
+      background: "white",
+    });
+    gsap.to(".line3", 0.5, {
+      rotate: "0deg",
+      y: 0,
+      background: "white",
+    });
+    gsap.to("#logo", 0.5, { color: "white" });
+    gsap.to(".nav-bar", 1, {
+      clipPath: `circle(50px at 100% -10%)`,
+      zIndex: -1,
+    });
+    document.body.style.overflowY = "scroll";
+  }
+}
+//
+
+//Event-Listeners:
+burger.addEventListener(`click`, navToggle);
 window.addEventListener(`mousemove`, cursor);
 window.addEventListener(`mouseover`, activeCursor);
 

@@ -24,14 +24,17 @@ body {
   width: 80%;
   margin: auto;
   padding: 2rem 0rem;
+  z-index: 10;
 }
 .line1,
-.line2 {
+.line2,
+.line3 {
   width: 3rem;
   height: 0.2rem;
   margin: 0.4rem;
   background: white;
   pointer-events: none;
+  z-index: 10;
 }
 .slide {
   min-height: 100vh;
@@ -42,6 +45,7 @@ body {
   justify-content: space-between;
   color: white;
   background: #17181a;
+  z-index: -1;
 }
 .hero-desc {
   display: flex;
@@ -111,6 +115,7 @@ body {
 }
 .burger {
   cursor: pointer;
+  z-index: 10;
 }
 .nav-links {
   font-size: 3rem;

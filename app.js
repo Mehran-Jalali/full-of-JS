@@ -105,10 +105,12 @@ function activeCursor(e) {
     mouseTxt.style.color = ``;
   }
 }
-
+let nav = document.querySelector(`.nav-header`);
 function navToggle(e) {
   if (!e.target.classList.contains(`active`)) {
     e.target.classList.add(`active`);
+    nav.classList.add(`active`);
+
     gsap.to(".line2", { opacity: 0 });
     gsap.to(".line1", 0.5, {
       rotate: "45deg",
@@ -122,12 +124,14 @@ function navToggle(e) {
     });
     gsap.to("#logo", 0.5, { color: "black" });
     gsap.to(".nav-bar", 1, {
-      clipPath: `circle(2500px at 100% -10%)`,
-      zIndex: -1,
+      clipPath: `circle(1500px at 100% -10%)`,
+      zIndex: 100,
     });
     document.body.style.overflowY = "hidden";
   } else {
     e.target.classList.remove(`active`);
+    nav.classList.remove(`active`);
+
     gsap.to(".line2", { opacity: 1 });
     gsap.to(".line1", 0.5, {
       rotate: "0deg",
@@ -150,6 +154,7 @@ function navToggle(e) {
 //
 
 //Event-Listeners:
+
 burger.addEventListener(`click`, navToggle);
 window.addEventListener(`mousemove`, cursor);
 window.addEventListener(`mouseover`, activeCursor);

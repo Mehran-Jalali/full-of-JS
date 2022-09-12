@@ -152,11 +152,73 @@ function navToggle(e) {
   }
 }
 //
+//---------Barba Page Transition------------
+//1) Initialize barba
+//2) Add data-barba="wrapper" to your html's body for contents, you don't wanna change.
+//3) Add data-barba="container" for contents that you wanna change and name them with   data-barba-namespace="anyThing"
+const logo = document.querySelector("#logo");
+barba.init({
+  views: [
+    {
+      namespace: "home",
+      beforeEnter() {
+        animateSlides();
+        logo.href = "./index.html";
+      },
+      beforeLeave() {
+        slideScene.destroy();
+        pageScene.destroy();
+        controller.destroy();
+      },
+    },
+    {
+      namespace: "fashion",
+      beforeEnter() {
+        logo.href = "../index.html";
+      },
+    },
+  ],
+  transitions: [
+    {
+      leave({ current, next }) {
+        let done = this.async();
+        // create an animation before leaving the current page
+        const tl = new gsap.timeline({ defaults: { ease: "power2.inOut" } });
+        tl.fromTo(current.container, 1, { opacity: 1 }, { opacity: 0 });
+        tl.fromTo(
+          ".swipe",
+          1,
+          { y: "100%" },
+          { y: "0%", onComplete: done, ease: Bounce.easeOut },
+          "-=0.2"
+        );
+      },
+      enter({ current, next }) {
+        let done = this.async();
+        //Before we enter ==>Scroll to the top
+        window.scrollTo(0, 0);
 
+        // create an animation before leaving the current page
+        const tl = new gsap.timeline({ defaults: { ease: "power2.inOut" } });
+        tl.fromTo(
+          ".swipe",
+          1,
+          { y: "0%" },
+          {
+            y: "-100%",
+            stagger: 0.2,
+            onComplete: done,
+            ease: Bounce.easeOut,
+          },
+          "-=0.2"
+        );
+        tl.fromTo(next.container, 1, { opacity: 0 }, { opacity: 1 });
+      },
+    },
+  ],
+});
 //Event-Listeners:
 
 burger.addEventListener(`click`, navToggle);
 window.addEventListener(`mousemove`, cursor);
 window.addEventListener(`mouseover`, activeCursor);
-
-animateSlides();

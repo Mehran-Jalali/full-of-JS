@@ -1,6 +1,7 @@
 let controller;
 let slideScene;
 let pageScene;
+let detailScene;
 
 function animateSlides() {
   //initiate the controller here
@@ -175,6 +176,11 @@ barba.init({
       namespace: "fashion",
       beforeEnter() {
         logo.href = "../index.html";
+        detailAnimation();
+      },
+      beforeLeave() {
+        controller.destroy();
+        detailScene.destroy();
       },
     },
   ],
@@ -217,6 +223,42 @@ barba.init({
     },
   ],
 });
+
+function detailAnimation() {
+  controller = new ScrollMagic.Controller();
+  const slides = document.querySelectorAll(".detail-slide");
+  slides.forEach((slide, index, slides) => {
+    const slideTl = gsap.timeline({
+      defaults: {
+        duration: 1,
+      },
+    });
+    let nextSlide = slides.length - 1 === index ? `end` : slides[index + 1];
+    const nextImg = nextSlide.querySelector("img");
+    slideTl.fromTo(slide, { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.5 });
+    slideTl.fromTo(
+      nextSlide,
+      { opacity: 0, scale: 0.5 },
+      { opacity: 1, scale: 1 },
+      "-=1"
+    );
+    slideTl.fromTo(nextImg, { x: "30%" }, { x: "0%" });
+    // Create Scene
+    detailScene = new ScrollMagic.Scene({
+      triggerElement: slide,
+      duration: "100%",
+      triggerHook: 0,
+    })
+      .setTween(slideTl)
+      .setPin(slide, { pushFollowers: false })
+      .addIndicators({
+        colorStart: "white",
+        colorTrigger: "white",
+        name: "detailScene",
+      })
+      .addTo(controller);
+  });
+}
 //Event-Listeners:
 
 burger.addEventListener(`click`, navToggle);

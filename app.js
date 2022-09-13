@@ -251,11 +251,11 @@ function detailAnimation() {
     })
       .setTween(slideTl)
       .setPin(slide, { pushFollowers: false })
-      .addIndicators({
-        colorStart: "white",
-        colorTrigger: "white",
-        name: "detailScene",
-      })
+      //   .addIndicators({
+      //     colorStart: "white",
+      //     colorTrigger: "white",
+      //     name: "detailScene",
+      //   })
       .addTo(controller);
   });
 }
